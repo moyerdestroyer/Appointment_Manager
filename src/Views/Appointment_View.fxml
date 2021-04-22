@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox>
+         <children>
+            <TabPane prefHeight="400.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="All">
+                     <content>
+                        <AnchorPane prefHeight="400.0" prefWidth="1280.0">
+                           <children>
+                              <TableView fx:id="All_Appointment_Table" prefHeight="400.0" prefWidth="1280.0">
+                                <columns>
+                                  <TableColumn fx:id="All_Id_Column" prefWidth="62.0" text="ID" />
+                                  <TableColumn fx:id="All_Title_Column" prefWidth="153.0" text="Title" />
+                                    <TableColumn fx:id="All_Description_Column" prefWidth="150.0" text="Description" />
+                                    <TableColumn fx:id="All_Location_Column" prefWidth="157.0" text="Location" />
+                                    <TableColumn fx:id="All_Contact_Column" prefWidth="167.0" text="Contact" />
+                                    <TableColumn fx:id="All_Type_Column" prefWidth="131.0" text="Type" />
+                                    <TableColumn fx:id="All_Start_Column" prefWidth="182.0" text="Start:" />
+                                    <TableColumn fx:id="All_End_Column" minWidth="0.0" prefWidth="178.0" text="End:" />
+                                    <TableColumn fx:id="All_Customer_Id_Column" prefWidth="99.0" text="Customer ID" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                </Tab>
+                <Tab text="Month">
+                     <content>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="Month_Appointment_Table" prefHeight="400.0" prefWidth="1280.0">
+                                 <columns>
+                                    <TableColumn fx:id="Month_Id_Column" prefWidth="62.0" text="ID" />
+                                    <TableColumn fx:id="Month_Title_Column" prefWidth="153.0" text="Title" />
+                                    <TableColumn fx:id="Month_Description_Column" prefWidth="150.0" text="Description" />
+                                    <TableColumn fx:id="Month_Location_Column" prefWidth="157.0" text="Location" />
+                                    <TableColumn fx:id="Month_Contact_Column" prefWidth="167.0" text="Contact" />
+                                    <TableColumn fx:id="Month_Type_Column" prefWidth="131.0" text="Type" />
+                                    <TableColumn fx:id="Month_Start_Column" prefWidth="182.0" text="Start:" />
+                                    <TableColumn fx:id="Month_End_Column" minWidth="0.0" prefWidth="178.0" text="End:" />
+                                    <TableColumn fx:id="Month_Customer_Id_Column" prefWidth="99.0" text="Customer ID" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                </Tab>
+                  <Tab text="Week">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="Week_Appointment_Table" prefHeight="400.0" prefWidth="1280.0">
+                                 <columns>
+                                    <TableColumn fx:id="Week_Id_Column" prefWidth="62.0" text="ID" />
+                                    <TableColumn fx:id="Week_Title_Column" prefWidth="153.0" text="Title" />
+                                    <TableColumn fx:id="Week_Description_Column" prefWidth="150.0" text="Description" />
+                                    <TableColumn fx:id="Week_Location_Column" prefWidth="157.0" text="Location" />
+                                    <TableColumn fx:id="Week_Contact_Column" prefWidth="167.0" text="Contact" />
+                                    <TableColumn fx:id="Week_Type_Column" prefWidth="131.0" text="Type" />
+                                    <TableColumn fx:id="Week_Start_Column" prefWidth="182.0" text="Start:" />
+                                    <TableColumn fx:id="Week_End_Column" minWidth="0.0" prefWidth="178.0" text="End:" />
+                                    <TableColumn fx:id="Week_Customer_Id_Column" prefWidth="99.0" text="Customer ID" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+            <Separator prefWidth="1240.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </Separator>
+            <HBox prefHeight="50.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="Add_Button" mnemonicParsing="false" onAction="#AddAppointmentAction" prefHeight="50.0" text="Add Apointment">
+                     <HBox.margin>
+                        <Insets left="2.0" right="2.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="Update_Button" mnemonicParsing="false" onAction="#UpdateAppointmentAction" prefHeight="50.0" text="Update Appointment">
+                     <HBox.margin>
+                        <Insets left="2.0" right="2.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="Delete_Button" mnemonicParsing="false" onAction="#DeleteAppointmentAction" prefHeight="50.0" text="Delete Appointment">
+                     <HBox.margin>
+                        <Insets left="2.0" right="2.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <Separator prefWidth="1240.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </Separator>
+            <Button fx:id="Customer_View_Button" mnemonicParsing="false" onAction="#CustomerViewAction" text="Customer View">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="Generate_Report_Button" mnemonicParsing="false" onAction="#GenerateReportAction" text="Generate Report...">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="Quit_Button" mnemonicParsing="false" onAction="#QuitButtonAction" text="Quit">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</Pane>
