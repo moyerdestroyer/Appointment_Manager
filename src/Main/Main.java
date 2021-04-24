@@ -23,12 +23,6 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        Date tempDate = new Date(111111111);
-        Customer test = new Customer(1, "test", "123 Jump St.", "12345", "123-456-7890", tempDate, "Me", new Timestamp(System.currentTimeMillis()), "Also Me", 22);
-        System.out.println(test);
-        System.out.println(test.getAddress());
-        System.out.println(test.getLastUpdated());
-        System.out.println(test.getDateCreated());
         launch(args);
     }
 }

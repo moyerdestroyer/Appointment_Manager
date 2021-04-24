@@ -1,19 +1,19 @@
 package Model;
 
-import java.sql.Timestamp;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 public class FirstLevel {
     private int id;
     private String division;
-    private Date createDate;
+    private LocalDateTime createDate;
     private String createdBy;
-    private Timestamp lastUpdated;
+    private LocalDateTime lastUpdated;
     private String lastUpdatedBy;
     private int countryId;
 
     //Constructor
-    public FirstLevel(int id, String division, Date createDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy, int countryId) {
+    public FirstLevel(int id, String division, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdated, String lastUpdatedBy, int countryId) {
         this.id = id;
         this.division = division;
         this.createDate = createDate;
@@ -39,11 +39,11 @@ public class FirstLevel {
         this.division = division;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
@@ -55,11 +55,11 @@ public class FirstLevel {
         this.createdBy = createdBy;
     }
 
-    public Timestamp getLastUpdated() {
+    public LocalDateTime getLastUpdated() {
         return lastUpdated;
     }
 
-    public void setLastUpdated(Timestamp lastUpdated) {
+    public void setLastUpdated(LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
