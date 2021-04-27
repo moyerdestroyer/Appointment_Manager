@@ -3,10 +3,17 @@ package Controllers;
 import Model.Appointment;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class ReportViewController {
 
@@ -56,8 +63,13 @@ public class ReportViewController {
     private Button Quit_Button;
 
     @FXML
-    void QuitButtonAction(ActionEvent event) {
-
+    void QuitButtonAction(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/Appointment_View.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage primaryStage = (Stage)((Node) event.getSource()).getScene().getWindow();
+        primaryStage.setTitle("Customer View");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
     }
 
 }

@@ -1,5 +1,9 @@
 package Controllers;
 
+import Model.*;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,38 +16,49 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class CustomerViewController {
+    ObservableList<Customer> allCustomers;
+    public void initialize() {
+        allCustomers = FXCollections.observableArrayList(new Customer(1, "Dude", "123 Street", "12345", "123-456-7890", LocalDateTime.now(), "You!", LocalDateTime.now(), "Somebody Else", 43));
+
+        ID_Column.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("id"));
+        Country_Column.setCellValueFactory(new PropertyValueFactory<Customer, String>("division"));
+
+
+    }
 
     @FXML
     private Label Title_Label;
 
     @FXML
-    private TableView<?> Customer_Table;
+    private TableView<Customer> Customer_Table;
 
     @FXML
-    private TableColumn<?, ?> ID_Column;
+    private TableColumn<Customer, Integer> ID_Column;
 
     @FXML
-    private TableColumn<?, ?> Country_Column;
+    private TableColumn<Customer, String> Country_Column;
 
     @FXML
-    private TableColumn<?, ?> Division_Column;
+    private TableColumn<Customer, String> Division_Column;
 
     @FXML
-    private TableColumn<?, ?> Name_Column;
+    private TableColumn<Customer, String> Name_Column;
 
     @FXML
-    private TableColumn<?, ?> Address_Column;
+    private TableColumn<Customer, String> Address_Column;
 
     @FXML
-    private TableColumn<?, ?> Postal_Code_Column;
+    private TableColumn<Customer, String> Postal_Code_Column;
 
     @FXML
-    private TableColumn<?, ?> Phone_Number_Column;
+    private TableColumn<Customer, String> Phone_Number_Column;
 
     @FXML
     private Button Add_Button;
@@ -103,7 +118,7 @@ public class CustomerViewController {
 
     @FXML
     void QuitButtonAction(ActionEvent event) {
-
+        Platform.exit();
     }
 
     @FXML
