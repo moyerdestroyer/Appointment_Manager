@@ -13,6 +13,7 @@ public class Customer {
     private LocalDateTime lastUpdated;
     private String lastUpdatedBy;
     private int divisionId;
+    private String countryName;
 
     //Constructor
     public Customer(int id, String name, String address, String postalCode, String phoneNumber, LocalDateTime dateCreated, String createdBy, LocalDateTime lastUpdated, String lastUpdatedBy, int divisionId) {
@@ -26,6 +27,7 @@ public class Customer {
         this.lastUpdated = lastUpdated;
         this.lastUpdatedBy = lastUpdatedBy;
         this.divisionId = divisionId;
+        this.countryName = this.setCountryName(divisionId);
     };
 
     public int getId() {
@@ -107,4 +109,14 @@ public class Customer {
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;
     }
+
+    public String setCountryName (int countryId) {
+        //stuff to get the country name based on the id
+        return "USA";
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
 }

@@ -28,9 +28,13 @@ public class CustomerViewController {
         allCustomers = FXCollections.observableArrayList(new Customer(1, "Dude", "123 Street", "12345", "123-456-7890", LocalDateTime.now(), "You!", LocalDateTime.now(), "Somebody Else", 43));
 
         ID_Column.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("id"));
-        Country_Column.setCellValueFactory(new PropertyValueFactory<Customer, String>("division"));
-
-
+        Country_Column.setCellValueFactory(new PropertyValueFactory<Customer, String>("countryName"));
+        Division_Column.setCellValueFactory(new PropertyValueFactory<Customer, String>("divisionId"));
+        Name_Column.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
+        Address_Column.setCellValueFactory(new PropertyValueFactory<Customer, String>("address"));
+        Postal_Code_Column.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));
+        Phone_Number_Column.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
+        Customer_Table.setItems(allCustomers);
     }
 
     @FXML
