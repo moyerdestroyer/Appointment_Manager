@@ -1,5 +1,9 @@
 package Controllers;
 
+import DAO.DBConnection;
+import DAO.DBCountries;
+import Model.Country;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,8 +17,10 @@ import javafx.scene.control.TitledPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-
 public class LoginFormController {
+    public void initialize() {
+        DBConnection.startConnection();
+    }
 
     @FXML
     private TitledPane Title_Pane;
@@ -41,8 +47,6 @@ public class LoginFormController {
     public void LoginButtonAction(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/Appointment_View.fxml"));
         Parent root = (Parent) loader.load();
-        //AppointmentViewController controller = loader.getController();
-        //controller.initialize();
         Stage primaryStage = (Stage)((Node) event.getSource()).getScene().getWindow();
         primaryStage.setTitle("Appointment View");
         primaryStage.setScene(new Scene(root));
