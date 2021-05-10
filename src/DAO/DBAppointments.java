@@ -14,7 +14,7 @@ public class DBAppointments {
     public static ObservableList<Appointment> returnAllAppointments() {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         try {
-            String sql = "SELECT * FROM Appointments";
+            String sql = "SELECT * FROM appointments";
             PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -44,7 +44,7 @@ public class DBAppointments {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         int targetId = targetCustomer.getId();
         try {
-            String sql = "SELECT * FROM Appointments WHERE " + targetId;
+            String sql = "SELECT * FROM appointments WHERE " + targetId;
             PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

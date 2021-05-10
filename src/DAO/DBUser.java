@@ -13,12 +13,12 @@ public class DBUser {
     public static ObservableList<User> returnAllUsers() {
         ObservableList<User> allUsers = FXCollections.observableArrayList();
         try {
-            String sql = "SELECT * FROM Users";
+            String sql = "SELECT * FROM users";
             PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 int userId = rs.getInt("User_ID");
-                String userName = rs.getString("Name");
+                String userName = rs.getString("User_Name");
                 String password = rs.getString("Password");
                 LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
                 String createdBy = rs.getString("Created_By");

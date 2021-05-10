@@ -14,12 +14,12 @@ public class DBCustomers {
     public static ObservableList<Customer> returnAllCustomers() {
         ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
         try {
-            String sql = "SELECT * FROM Customers";
+            String sql = "SELECT * FROM customers";
             PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 int customerId = rs.getInt("Customer_ID");
-                String customerName = rs.getString("Name");
+                String customerName = rs.getString("Customer_Name");
                 String address = rs.getString("Address");
                 String postalCode = rs.getString("Postal_Code");
                 String phoneNumber = rs.getString("Phone");
@@ -40,12 +40,12 @@ public class DBCustomers {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         int targetDivisionId = targetDivision.getId();
         try {
-            String sql = "SELECT * FROM Customers WHERE Division_ID = " + targetDivisionId;
+            String sql = "SELECT * FROM customers WHERE Division_ID = " + targetDivisionId;
             PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 int customerId = rs.getInt("Customer_ID");
-                String customerName = rs.getString("Name");
+                String customerName = rs.getString("Customer_Name");
                 String address = rs.getString("Address");
                 String postalCode = rs.getString("Postal_Code");
                 String phoneNumber = rs.getString("Phone");

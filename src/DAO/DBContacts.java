@@ -12,12 +12,12 @@ public class DBContacts {
     public static ObservableList<Contact> returnAllContacts() {
         ObservableList<Contact> allContacts = FXCollections.observableArrayList();
         try {
-            String sql = "SELECT * FROM Contacts";
+            String sql = "SELECT * FROM contacts";
             PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 int contactId = rs.getInt("Contact_ID");
-                String contactName = rs.getString("Name");
+                String contactName = rs.getString("Contact_Name");
                 String email = rs.getString("Email");
                 Contact c = new Contact(contactId, contactName, email);
                 allContacts.add(c);

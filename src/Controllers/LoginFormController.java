@@ -1,8 +1,7 @@
 package Controllers;
 
-import DAO.DBConnection;
-import DAO.DBCountries;
-import Model.Country;
+import DAO.*;
+import Model.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,9 +16,36 @@ import javafx.scene.control.TitledPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 public class LoginFormController {
     public void initialize() {
         DBConnection.startConnection();
+
+        //TEST CODE!!!!!!!!!!
+        ObservableList<Country> allCountries = DBCountries.getAllCountries();
+        for (Country allCountry : allCountries) {
+            System.out.println(allCountry.getCountry());
+        }
+        ObservableList<Appointment> allAppointments = DBAppointments.returnAllAppointments();
+        for (Appointment allAppointment : allAppointments) {
+            System.out.println(allAppointment.getTitle());
+        }
+        ObservableList<Contact> allContacts = DBContacts.returnAllContacts();
+        for (Contact allContact : allContacts) {
+            System.out.println(allContact.getName());
+        }
+        ObservableList<Customer> allCustomers = DBCustomers.returnAllCustomers();
+        for (Customer allCustomer : allCustomers) {
+            System.out.println(allCustomer.getName());
+        }
+        ObservableList<User> allUsers = DBUser.returnAllUsers();
+        for (User allUser : allUsers) {
+            System.out.println(allUser.getName());
+        }
+        //////END TEST CODE!!!!!!!
     }
 
     @FXML
