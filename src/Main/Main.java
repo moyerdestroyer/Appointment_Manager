@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 
@@ -15,8 +15,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/Login_Form.fxml"));
-        ResourceBundle languageBundle = ResourceBundle.getBundle("Resources.language");
-        loader.setResources(languageBundle);
+        Locale defaultLocale = Locale.getDefault();
+        loader.setResources(ResourceBundle.getBundle("Resources.language", defaultLocale));
         Parent root = loader.load();
         primaryStage.setTitle("Appointment Program");
         primaryStage.setScene(new Scene(root));

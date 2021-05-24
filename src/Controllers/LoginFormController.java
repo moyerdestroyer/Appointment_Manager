@@ -9,43 +9,27 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LoginFormController {
     public void initialize() {
         DBConnection.startConnection();
+    }
 
-        //TEST CODE!!!!!!!!!!
-        ObservableList<Country> allCountries = DBCountries.getAllCountries();
-        for (Country allCountry : allCountries) {
-            System.out.println(allCountry.getCountry());
-        }
-        ObservableList<Appointment> allAppointments = DBAppointments.returnAllAppointments();
-        for (Appointment allAppointment : allAppointments) {
-            System.out.println(allAppointment.getTitle());
-        }
-        ObservableList<Contact> allContacts = DBContacts.returnAllContacts();
-        for (Contact allContact : allContacts) {
-            System.out.println(allContact.getName());
-        }
-        ObservableList<Customer> allCustomers = DBCustomers.returnAllCustomers();
-        for (Customer allCustomer : allCustomers) {
-            System.out.println(allCustomer.getName());
-        }
-        ObservableList<User> allUsers = DBUser.returnAllUsers();
-        for (User allUser : allUsers) {
-            System.out.println(allUser.getName());
-        }
-        //////END TEST CODE!!!!!!!
+    public void errorMessage() {
+        Alert error = new Alert(Alert.AlertType.ERROR);
+        error.setWidth(400);
+        Locale defaultLocale = Locale.getDefault();
+        ResourceBundle defaultBundle = ResourceBundle.getBundle("Resources.language", defaultLocale);
+        error.setTitle(defaultBundle.getString("error"));
+        error.setHeaderText(defaultBundle.getString("messagetitle"));
+        error.setContentText(defaultBundle.getString("message"));
+        error.showAndWait();
     }
 
     @FXML
@@ -71,12 +55,19 @@ public class LoginFormController {
 
     @FXML
     public void LoginButtonAction(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/Appointment_View.fxml"));
-        Parent root = (Parent) loader.load();
-        Stage primaryStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        primaryStage.setTitle("Appointment View");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
+        String username = Username_Text.getText();
+        String password = Password_Text.getText();
+        System.out.println(DBUser.login(username, password));
+        if (DBUser.login(username, password)) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/Appointment_View.fxml"));
+            Parent root = (Parent) loader.load();
+            Stage primaryStage = (Stage)((Node) event.getSource()).getScene().getWindow();
+            primaryStage.setTitle("Appointment View");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+        } else {
+            errorMessage();
+        }
     }
 
 }
