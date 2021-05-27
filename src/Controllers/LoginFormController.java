@@ -13,12 +13,14 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LoginFormController {
     public void initialize() {
         DBConnection.startConnection();
+        Location_Label.setText(String.valueOf(ZoneId.systemDefault()));
     }
 
     public void errorMessage() {

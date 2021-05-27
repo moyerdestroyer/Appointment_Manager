@@ -70,4 +70,9 @@ public class DBAppointments {
         }
         return appointmentList;
     }
+    public static String  updateAppointment (Appointment appointmentToUpdate) {
+        try {
+
+        }
+    }
 }
