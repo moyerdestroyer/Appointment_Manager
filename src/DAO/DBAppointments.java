@@ -71,8 +71,11 @@ public class DBAppointments {
         return appointmentList;
     }
     public static String  updateAppointment (Appointment appointmentToUpdate) {
-        try {
+        //Update string
+    }
+    public static String addAppointment (Appointment appointmentToAdd) {
 
-        }
+
+        String sql = "INSERT INTO appointments (Appointment_ID, Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES ('" + concatString + "')";
     }
 }
