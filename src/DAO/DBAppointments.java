@@ -72,10 +72,26 @@ public class DBAppointments {
     }
     public static String  updateAppointment (Appointment appointmentToUpdate) {
         //Update string
+        return null;
     }
     public static String addAppointment (Appointment appointmentToAdd) {
-
-
-        String sql = "INSERT INTO appointments (Appointment_ID, Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES ('" + concatString + "')";
+        String title = "'" + appointmentToAdd.getTitle() + "', ";
+        String description = "'" + appointmentToAdd.getDescription() + "', ";
+        String location = "'" + appointmentToAdd.getLocation() + "', ";
+        String type = "'" + appointmentToAdd.getType() + "', ";
+        String start = "'" + TimeConversion.dateToString(appointmentToAdd.getStart()) + "', ";
+        String end = "'" + TimeConversion.dateToString(appointmentToAdd.getEnd()) + "', ";
+        String create = " now(), ";
+        String createdby = "'" + DBUser.returnUserById(appointmentToAdd.getId()).getName() + "', ";
+        String update = " now, ";
+        String updatedby = "'" + DBUser.returnUserById(appointmentToAdd.getId()).getName() + "', ";
+        String customerId = appointmentToAdd.getCustomerId() + ", ";
+        String userId = appointmentToAdd.getUserId() + ", ";
+        String contactId = String.valueOf(appointmentToAdd.getContactId());
+        String concatString = title + description + location + type + start + end + create + createdby + update + updatedby + customerId + userId + contactId;
+        String sql = "INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES (" + concatString + ")";
+        //A working INSERT
+        //INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID)
+        //VALUES ('New Title', 'Cool thing', 'Right here', 'No type', '2021-06-04 19:00:00', '2021-06-04 20:00:00', NOW(), 'test', NOW(), 'test', 1, 2, 3);
     }
 }

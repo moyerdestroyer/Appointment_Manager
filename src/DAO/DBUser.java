@@ -80,4 +80,25 @@ public class DBUser {
         }
         return selectedUser;
     }
+    public static User returnUserById(int id) {
+        User selectedUser = null;
+        try {
+            String sql = "Select * FROM users WHERE User_ID = " + id;
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int userId = rs.getInt("User_ID");
+                String userName = rs.getString("User_Name");
+                String pass = rs.getString("Password");
+                LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
+                String createdBy = rs.getString("Created_By");
+                LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
+                String lastUpdatedBy = rs.getString("Last_Updated_By");
+                selectedUser = new User(userId, userName, pass, createDate, createdBy, lastUpdate, lastUpdatedBy);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return selectedUser;
+    }
 }
