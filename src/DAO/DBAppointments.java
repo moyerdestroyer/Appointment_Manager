@@ -70,9 +70,36 @@ public class DBAppointments {
         }
         return appointmentList;
     }
-    public static String  updateAppointment (Appointment appointmentToUpdate) {
-        //Update string
-        return null;
+    public static String updateAppointment (Appointment appointmentToUpdate) {
+        String title = "UPDATE appointments SET Title = '" + appointmentToUpdate.getTitle() + "', ";
+        String description = "Description = '" + appointmentToUpdate.getDescription() + "', ";
+        String location = "Location = '" + appointmentToUpdate.getLocation() + "', ";
+        String type = "Type = '" + appointmentToUpdate.getType() + "', ";
+        String start = "Start = '" + TimeConversion.dateToString(appointmentToUpdate.getStart()) + "', ";
+        String end = "End = '" + TimeConversion.dateToString(appointmentToUpdate.getEnd()) + "', ";
+        String createDate = "Create_Date = '" + TimeConversion.dateToString(appointmentToUpdate.getCreateDate()) + "', ";
+        String createdBy = "Created_By = '" + appointmentToUpdate.getCreatedBy() + "', ";
+        String lastUpdate = "Last_Update = now(), ";
+        String lastUpdateBy = "Last_Updated_By = '" + DBUser.returnUserById(appointmentToUpdate.getUserId()).getName() + "', ";
+        String customerId = "Customer_ID = " + appointmentToUpdate.getCustomerId() + ", ";
+        String userID = "User_ID = " + appointmentToUpdate.getUserId() + ", ";
+        String contactID = "Contact_ID = " + appointmentToUpdate.getContactId() + " ";
+        String last = "WHERE Appointment_ID = " + appointmentToUpdate.getId();
+        String sql = title + description + location + type + start + end + createDate + createdBy + lastUpdate + lastUpdateBy + customerId + userID + contactID + last;
+        String returnString = "";
+        //REmove this later
+        System.out.println(sql);
+        try {
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            boolean successful = ps.execute();
+            returnString = "Appointments updated: " + successful;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return returnString;
+        //UPDATE appointments
+        // SET (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID)
+        //WHERE Appointment_ID=
     }
     public static String addAppointment (Appointment appointmentToAdd) {
         String title = "'" + appointmentToAdd.getTitle() + "', ";
@@ -82,16 +109,37 @@ public class DBAppointments {
         String start = "'" + TimeConversion.dateToString(appointmentToAdd.getStart()) + "', ";
         String end = "'" + TimeConversion.dateToString(appointmentToAdd.getEnd()) + "', ";
         String create = " now(), ";
-        String createdby = "'" + DBUser.returnUserById(appointmentToAdd.getId()).getName() + "', ";
-        String update = " now, ";
-        String updatedby = "'" + DBUser.returnUserById(appointmentToAdd.getId()).getName() + "', ";
+        String createdby = "'" + DBUser.returnUserById(appointmentToAdd.getUserId()).getName() + "', ";
+        String update = " now(), ";
+        String updatedby = "'" + DBUser.returnUserById(appointmentToAdd.getUserId()).getName() + "', ";
         String customerId = appointmentToAdd.getCustomerId() + ", ";
         String userId = appointmentToAdd.getUserId() + ", ";
         String contactId = String.valueOf(appointmentToAdd.getContactId());
         String concatString = title + description + location + type + start + end + create + createdby + update + updatedby + customerId + userId + contactId;
         String sql = "INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES (" + concatString + ")";
+        String returnString = "";
+        try {
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            boolean successful = ps.execute();
+            returnString = "Appointment added: " + successful;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return returnString;
         //A working INSERT
         //INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID)
         //VALUES ('New Title', 'Cool thing', 'Right here', 'No type', '2021-06-04 19:00:00', '2021-06-04 20:00:00', NOW(), 'test', NOW(), 'test', 1, 2, 3);
+    }
+    public static String deleteAppointment (Appointment appointmentToDelete) {
+        String returnString = "";
+        String sql = "DELETE FROM appointments WHERE Appointment_ID = " + appointmentToDelete.getId();
+        try {
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            boolean successful = ps.execute();
+            returnString = "Appointment deleted: " + successful;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return returnString;
     }
 }

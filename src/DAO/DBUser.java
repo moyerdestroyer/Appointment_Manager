@@ -62,7 +62,7 @@ public class DBUser {
     public static User returnUserByName(String username) {
         User selectedUser = null;
         try {
-            String sql = "Select * FROM users WHERE User_Name = '" + username + "'";
+            String sql = "SELECT * FROM users WHERE User_Name = '" + username + "'";
             PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

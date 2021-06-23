@@ -62,12 +62,12 @@ public class LoginFormController {
         System.out.println(DBUser.login(username, password));
         if (DBUser.login(username, password)) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/Appointment_View.fxml"));
-            AppointmentViewController controller = loader.getController();
-            controller.passUser(DBUser.returnUserByName(username));
             Parent root = (Parent) loader.load();
             Stage primaryStage = (Stage)((Node) event.getSource()).getScene().getWindow();
             primaryStage.setTitle("Appointment View");
             primaryStage.setScene(new Scene(root));
+            AppointmentViewController control = loader.getController();
+            control.passUser(username);
             primaryStage.show();
         } else {
             errorMessage();
