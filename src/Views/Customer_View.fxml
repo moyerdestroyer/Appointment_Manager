@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.CustomerViewController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CustomerViewController">
    <children>
       <VBox prefHeight="800.0" prefWidth="1280.0">
          <children>
@@ -55,6 +55,7 @@
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </VBox.margin>
                         </Button>
+                        <Button fx:id="Select_Customer_Button" mnemonicParsing="false" onAction="#SelectCustomerAction" text="Select Customer" />
                         <Button fx:id="Appointment_View_Button" mnemonicParsing="false" onAction="#AppointmentViewAction" text="Appointment View">
                            <VBox.margin>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

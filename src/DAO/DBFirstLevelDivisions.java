@@ -22,7 +22,7 @@ public class DBFirstLevelDivisions {
                 String division = rs.getString("Division");
                 LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
                 String createdBy = rs.getString("Created_By");
-                LocalDateTime lastUpdate = rs.getTimestamp("Last_Updated").toLocalDateTime();
+                LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
                 String lastUpdatedBy = rs.getString("Last_Updated_By");
                 int countryId = rs.getInt("Country_ID");
                 FirstLevel f = new FirstLevel(divisionId, division, createDate, createdBy, lastUpdate, lastUpdatedBy, countryId);
@@ -45,7 +45,7 @@ public class DBFirstLevelDivisions {
                 String division = rs.getString("Division");
                 LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
                 String createdBy = rs.getString("Created_By");
-                LocalDateTime lastUpdate = rs.getTimestamp("Last_Updated").toLocalDateTime();
+                LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
                 String lastUpdatedBy = rs.getString("Last_Updated_By");
                 int countryId = rs.getInt("Country_ID");
                 FirstLevel f = new FirstLevel(divisionId, division, createDate, createdBy, lastUpdate, lastUpdatedBy, countryId);
