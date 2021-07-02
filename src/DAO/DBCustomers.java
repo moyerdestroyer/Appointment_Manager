@@ -62,4 +62,52 @@ public class DBCustomers {
         }
         return customerList;
     }
+
+    public static String addCustomer(Customer customerToSave) {
+        String concatString;
+        String name = "'" + customerToSave.getName() + "', ";
+        String address = "'" + customerToSave.getAddress() + "', ";
+        String postal = "'" + customerToSave.getPostalCode() + "', ";
+        String phone = "'" + customerToSave.getPhoneNumber() + "', ";
+        String create = "now(), ";
+        String createdBy = "'" + customerToSave.getCreatedBy() + "', ";
+        String last = " now(), ";
+        String updateBy = "'" + customerToSave.getLastUpdatedBy() + "', ";
+        String divisionId = String.valueOf(customerToSave.getDivisionId());
+        concatString = name + address + postal + phone + create + createdBy + last + updateBy + divisionId;
+        String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES (" + concatString + ")";
+        System.out.println(sql);
+        String returnString = "";
+        try {
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            boolean successful = ps.execute();
+            returnString = "Customer added: " + successful;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return returnString;
+    }
+
+    public static String updateCustomer(Customer customerToSave) {
+        String concatString;
+        String name = "Customer_Name = '" + customerToSave.getName() + "', ";
+        String address = "Address = '" + customerToSave.getAddress() + "', ";
+        String postal = "Postal_Code = '" + customerToSave.getPostalCode() + "', ";
+        String phone = "Phone = '" + customerToSave.getPhoneNumber() + "', ";
+        String last = "Last_Update = now(), ";
+        String updateBy = "Last_Updated_By = '" + customerToSave.getLastUpdatedBy() + "', ";
+        String divisionId = "Division_ID = " + customerToSave.getDivisionId();
+        concatString = name + address + postal + phone + last + updateBy + divisionId;
+        String sql = "UPDATE customers SET " + concatString + " WHERE Customer_ID = " + customerToSave.getId();
+        String returnString = "";
+        System.out.println(sql);
+        try {
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            boolean successful = ps.execute();
+            returnString = "Customer updated: " + successful;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return returnString;
+    }
 }

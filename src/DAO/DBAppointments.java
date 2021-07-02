@@ -77,17 +77,14 @@ public class DBAppointments {
         String type = "Type = '" + appointmentToUpdate.getType() + "', ";
         String start = "Start = '" + TimeConversion.dateToString(appointmentToUpdate.getStart()) + "', ";
         String end = "End = '" + TimeConversion.dateToString(appointmentToUpdate.getEnd()) + "', ";
-        String createDate = "Create_Date = '" + TimeConversion.dateToString(appointmentToUpdate.getCreateDate()) + "', ";
-        String createdBy = "Created_By = '" + appointmentToUpdate.getCreatedBy() + "', ";
         String lastUpdate = "Last_Update = now(), ";
         String lastUpdateBy = "Last_Updated_By = '" + DBUser.returnUserById(appointmentToUpdate.getUserId()).getName() + "', ";
         String customerId = "Customer_ID = " + appointmentToUpdate.getCustomerId() + ", ";
         String userID = "User_ID = " + appointmentToUpdate.getUserId() + ", ";
         String contactID = "Contact_ID = " + appointmentToUpdate.getContactId() + " ";
         String last = "WHERE Appointment_ID = " + appointmentToUpdate.getId();
-        String sql = title + description + location + type + start + end + createDate + createdBy + lastUpdate + lastUpdateBy + customerId + userID + contactID + last;
+        String sql = title + description + location + type + start + end + lastUpdate + lastUpdateBy + customerId + userID + contactID + last;
         String returnString = "";
-        //REmove this later
         System.out.println(sql);
         try {
             PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
@@ -97,9 +94,6 @@ public class DBAppointments {
             e.printStackTrace();
         }
         return returnString;
-        //UPDATE appointments
-        // SET (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID)
-        //WHERE Appointment_ID=
     }
     public static String addAppointment (Appointment appointmentToAdd) {
         String title = "'" + appointmentToAdd.getTitle() + "', ";

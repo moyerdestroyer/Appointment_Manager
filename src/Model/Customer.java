@@ -1,5 +1,8 @@
 package Model;
 
+import DAO.DBCountries;
+import DAO.DBFirstLevelDivisions;
+
 import java.time.LocalDateTime;
 
 public class Customer {
@@ -27,7 +30,7 @@ public class Customer {
         this.lastUpdated = lastUpdated;
         this.lastUpdatedBy = lastUpdatedBy;
         this.divisionId = divisionId;
-        this.countryName = this.setCountryName(divisionId);
+        this.countryName = DBCountries.getCountryById(DBFirstLevelDivisions.getDivisionByID(divisionId).getCountryId()).getCountry();
     };
 
     public int getId() {
@@ -108,11 +111,6 @@ public class Customer {
 
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;
-    }
-
-    public String setCountryName (int countryId) {
-        //stuff to get the country name based on the id
-        return "USA";
     }
 
     public String getCountryName() {

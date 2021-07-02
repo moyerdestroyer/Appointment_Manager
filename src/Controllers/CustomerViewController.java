@@ -3,9 +3,11 @@ package Controllers;
 import DAO.DBCountries;
 import DAO.DBCustomers;
 import DAO.DBFirstLevelDivisions;
+import DAO.TimeConversion;
 import Model.*;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -25,7 +27,6 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 public class CustomerViewController {
     User loggedInUser;
@@ -47,7 +48,7 @@ public class CustomerViewController {
         Phone_Number_Column.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
         Customer_Table.setItems(allCustomers);
 
-        Country_ChoiceBox.setItems(allCountries);
+
         Country_ChoiceBox.setConverter(new StringConverter<Country>() {
             @Override
             public String toString(Country country) {
@@ -59,13 +60,18 @@ public class CustomerViewController {
                 return null;
             }
         });
+        Country_ChoiceBox.setItems(allCountries);
         Country_ChoiceBox.getSelectionModel().selectFirst();
-
-        //FIX the filtered list, and maybe add a listener?
         FilteredList<FirstLevel> filteredDivisions = new FilteredList<>(allDivisions, p -> true);
-        filteredDivisions.setPredicate(FirstLevel -> {
-            return Country_ChoiceBox.getSelectionModel().getSelectedItem().getId() == FirstLevel.getCountryId();
+        Country_ChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Country>() {
+            @Override
+            public void changed(ObservableValue<? extends Country> observableValue, Country country, Country t1) {
+                filteredDivisions.setPredicate(FirstLevel -> {
+                    return FirstLevel.getCountryId() == Country_ChoiceBox.getSelectionModel().getSelectedItem().getId();
+                });
+            }
         });
+        Country_ChoiceBox.getSelectionModel().selectFirst();
         Division_Choicebox.setItems(filteredDivisions);
         Division_Choicebox.setConverter(new StringConverter<FirstLevel>() {
             @Override
@@ -80,7 +86,7 @@ public class CustomerViewController {
         });
     }
 
-    public void pass_user (User loggedInUser) {
+    public void pass_user(User loggedInUser) {
         this.loggedInUser = loggedInUser;
     }
 
@@ -150,9 +156,16 @@ public class CustomerViewController {
     @FXML
     private Button Save_Button;
 
+
     @FXML
     void AddCustomerAction(ActionEvent event) {
-
+        Id_Textfield.setText("Auto");
+        Name_Textfield.clear();
+        Address_Textfield.clear();
+        Postal_Code_Textfield.clear();
+        Phone_Number_Textfield.clear();
+        Country_ChoiceBox.getSelectionModel().selectFirst();
+        Division_Choicebox.getSelectionModel().selectFirst();
     }
 
     @FXML
@@ -163,14 +176,16 @@ public class CustomerViewController {
         Address_Textfield.setText(selectedCustomer.getAddress());
         Postal_Code_Textfield.setText(selectedCustomer.getPostalCode());
         Phone_Number_Textfield.setText(selectedCustomer.getPhoneNumber());
-
+        FirstLevel theDivison = DBFirstLevelDivisions.getDivisionByID(selectedCustomer.getDivisionId());
+        Country_ChoiceBox.getSelectionModel().clearAndSelect(DBCountries.getCountryById(theDivison.getCountryId()).getId() - 1);
+        Division_Choicebox.getSelectionModel().select(theDivison);
     }
 
     @FXML
     void AppointmentViewAction(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/Appointment_View.fxml"));
         Parent root = (Parent) loader.load();
-        Stage primaryStage = (Stage)((Node) event.getSource()).getScene().getWindow();
+        Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         primaryStage.setTitle("Appointment View");
         primaryStage.setScene(new Scene(root));
         AppointmentViewController control = loader.getController();
@@ -190,7 +205,74 @@ public class CustomerViewController {
 
     @FXML
     void SaveButtonAction(ActionEvent event) {
-
+        Customer customerToSave = getCustomerFromFields();
+        if (Id_Textfield.getText().contains("Auto")) {
+            DBCustomers.addCustomer(customerToSave);
+        } else {
+            DBCustomers.updateCustomer(customerToSave);
+            refreshTables();
+        }
     }
 
+
+    public Customer getCustomerFromFields() {
+        Customer returnCustomer = null;
+        int idInt;
+        if (Id_Textfield.getText().equals("Auto")) {
+            idInt = 1;
+        } else {
+            idInt = Integer.parseInt(Id_Textfield.getText());
+        }
+        String name;
+        try {
+            name = Name_Textfield.getText();
+        } catch (Exception e) {
+            return returnCustomer;
+        }
+        String address;
+        try {
+            address = Address_Textfield.getText();
+        } catch (Exception e) {
+            return returnCustomer;
+        }
+        String postalCode;
+        try {
+            postalCode = Postal_Code_Textfield.getText();
+        } catch (Exception e) {
+            return returnCustomer;
+        }
+        String phoneNumber;
+        if (!Phone_Number_Textfield.getText().matches(".*[a-z].*")) {
+            try {
+                phoneNumber = Phone_Number_Textfield.getText();
+            } catch (Exception e) {
+                return returnCustomer;
+            }
+        } else {
+            return returnCustomer;
+        }
+        FirstLevel division;
+        try {
+            division = Division_Choicebox.getSelectionModel().getSelectedItem();
+        } catch (Exception e) {
+            return returnCustomer;
+        }
+
+        returnCustomer = new Customer(idInt, name, address, postalCode, phoneNumber, TimeConversion.now(), loggedInUser.getName(), TimeConversion.now(), loggedInUser.getName(), division.getId());
+        return returnCustomer;
+    }
+
+
+    public void refreshTables() {
+        this.allCustomers.removeAll();
+        this.allDivisions.removeAll();
+        this.allCountries.removeAll();
+        this.allCustomers = DBCustomers.returnAllCustomers();
+        this.allCountries = DBCountries.getAllCountries();
+        this.allDivisions = DBFirstLevelDivisions.getFirstLevelDivisions();
+        initialize();
+        for (int i=0; i<this.allDivisions.size(); i++){
+            System.out.println(this.allDivisions.get(i).getDivision());
+        }
+    }
 }

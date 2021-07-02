@@ -33,7 +33,7 @@ public class DBFirstLevelDivisions {
         }
         return allFirstLevel;
     }
-    public static ObservableList<FirstLevel> getFirstLevelByCountry(Country targetCountry){
+    public static ObservableList<FirstLevel> getFirstLevelByCountryID(Country targetCountry){
         int targetCountryId = targetCountry.getId();
         ObservableList<FirstLevel> firstLevelList = FXCollections.observableArrayList();
         try {
@@ -55,5 +55,26 @@ public class DBFirstLevelDivisions {
             System.out.println(e.getMessage());
         }
         return firstLevelList;
+    }
+    public static FirstLevel getDivisionByID (int divisionID) {
+        FirstLevel returnDivision = null;
+        try {
+            String sql = "SELECT * from first_level_divisions WHERE Division_ID = " + divisionID;
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int divisionId = rs.getInt("Division_ID");
+                String division = rs.getString("Division");
+                LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
+                String createdBy = rs.getString("Created_By");
+                LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
+                String lastUpdatedBy = rs.getString("Last_Updated_By");
+                int countryId = rs.getInt("Country_ID");
+                returnDivision = new FirstLevel(divisionId, division, createDate, createdBy, lastUpdate, lastUpdatedBy, countryId);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return returnDivision;
     }
 }
