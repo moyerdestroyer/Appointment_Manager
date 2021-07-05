@@ -100,11 +100,23 @@ public class DBCustomers {
         concatString = name + address + postal + phone + last + updateBy + divisionId;
         String sql = "UPDATE customers SET " + concatString + " WHERE Customer_ID = " + customerToSave.getId();
         String returnString = "";
-        System.out.println(sql);
         try {
             PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
             boolean successful = ps.execute();
             returnString = "Customer updated: " + successful;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return returnString;
+    }
+
+    public static String deleteCustomer(Customer customerToDelete) {
+        String sql = "DELETE FROM customers WHERE Customer_ID = " + customerToDelete.getId();
+        String returnString = "";
+        try {
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            boolean successful = ps.execute();
+            returnString = "Customer Deleted: " + successful;
         } catch (SQLException e) {
             e.printStackTrace();
         }

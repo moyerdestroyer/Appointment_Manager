@@ -11,7 +11,7 @@ public class TimeConversion {
     public static String dateToString (LocalDateTime timeToConvert) {
         ZonedDateTime zonedTime = timeToConvert.atZone(ZoneId.of("UTC"));
         ZonedDateTime convertedTime = zonedTime.withZoneSameInstant(TimeZone.getDefault().toZoneId());
-        System.out.println(convertedTime.format(formatter));
+        //System.out.println(convertedTime.format(formatter));
         return convertedTime.format(formatter);
     }
 

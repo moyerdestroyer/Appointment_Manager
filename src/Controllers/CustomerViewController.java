@@ -6,6 +6,9 @@ import DAO.DBFirstLevelDivisions;
 import DAO.TimeConversion;
 import Model.*;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -27,6 +30,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
+import java.util.function.Predicate;
 
 public class CustomerViewController {
     User loggedInUser;
@@ -61,18 +65,14 @@ public class CustomerViewController {
             }
         });
         Country_ChoiceBox.setItems(allCountries);
-        Country_ChoiceBox.getSelectionModel().selectFirst();
-        FilteredList<FirstLevel> filteredDivisions = new FilteredList<>(allDivisions, p -> true);
-        Country_ChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Country>() {
-            @Override
-            public void changed(ObservableValue<? extends Country> observableValue, Country country, Country t1) {
-                filteredDivisions.setPredicate(FirstLevel -> {
-                    return FirstLevel.getCountryId() == Country_ChoiceBox.getSelectionModel().getSelectedItem().getId();
-                });
-            }
+        FilteredList<FirstLevel> filteredDivisions = new FilteredList<>(allDivisions, d -> true);
+        Division_Choicebox.setItems(filteredDivisions);
+        Country_ChoiceBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
+            filteredDivisions.setPredicate(FirstLevel -> {
+                return FirstLevel.getCountryId() == Country_ChoiceBox.getSelectionModel().getSelectedItem().getId();
+            });
         });
         Country_ChoiceBox.getSelectionModel().selectFirst();
-        Division_Choicebox.setItems(filteredDivisions);
         Division_Choicebox.setConverter(new StringConverter<FirstLevel>() {
             @Override
             public String toString(FirstLevel firstLevel) {
@@ -156,7 +156,6 @@ public class CustomerViewController {
     @FXML
     private Button Save_Button;
 
-
     @FXML
     void AddCustomerAction(ActionEvent event) {
         Id_Textfield.setText("Auto");
@@ -178,7 +177,11 @@ public class CustomerViewController {
         Phone_Number_Textfield.setText(selectedCustomer.getPhoneNumber());
         FirstLevel theDivison = DBFirstLevelDivisions.getDivisionByID(selectedCustomer.getDivisionId());
         Country_ChoiceBox.getSelectionModel().clearAndSelect(DBCountries.getCountryById(theDivison.getCountryId()).getId() - 1);
-        Division_Choicebox.getSelectionModel().select(theDivison);
+        for (int i = 0; i < Division_Choicebox.getItems().size(); i++) {
+            if (Division_Choicebox.getItems().get(i).getId() == theDivison.getId()){
+                Division_Choicebox.getSelectionModel().select(i);
+            }
+        }
     }
 
     @FXML
@@ -195,7 +198,8 @@ public class CustomerViewController {
 
     @FXML
     void DeleteCustomerAction(ActionEvent event) {
-
+        Customer customerToDelete = getCustomerFromFields();
+        DBCustomers.deleteCustomer(customerToDelete);
     }
 
     @FXML
@@ -271,8 +275,5 @@ public class CustomerViewController {
         this.allCountries = DBCountries.getAllCountries();
         this.allDivisions = DBFirstLevelDivisions.getFirstLevelDivisions();
         initialize();
-        for (int i=0; i<this.allDivisions.size(); i++){
-            System.out.println(this.allDivisions.get(i).getDivision());
-        }
     }
 }
