@@ -2,6 +2,7 @@ package DAO;
 
 import Model.Appointment;
 import Model.Customer;
+import Model.Zone;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -75,8 +76,8 @@ public class DBAppointments {
         String description = "Description = '" + appointmentToUpdate.getDescription() + "', ";
         String location = "Location = '" + appointmentToUpdate.getLocation() + "', ";
         String type = "Type = '" + appointmentToUpdate.getType() + "', ";
-        String start = "Start = '" + TimeConversion.dateToString(appointmentToUpdate.getStart()) + "', ";
-        String end = "End = '" + TimeConversion.dateToString(appointmentToUpdate.getEnd()) + "', ";
+        String start = "Start = '" + TimeConversion.dateToString(appointmentToUpdate.getStart(), Zone.UTC) + "', ";
+        String end = "End = '" + TimeConversion.dateToString(appointmentToUpdate.getEnd(), Zone.UTC) + "', ";
         String lastUpdate = "Last_Update = now(), ";
         String lastUpdateBy = "Last_Updated_By = '" + DBUser.returnUserById(appointmentToUpdate.getUserId()).getName() + "', ";
         String customerId = "Customer_ID = " + appointmentToUpdate.getCustomerId() + ", ";
@@ -100,8 +101,8 @@ public class DBAppointments {
         String description = "'" + appointmentToAdd.getDescription() + "', ";
         String location = "'" + appointmentToAdd.getLocation() + "', ";
         String type = "'" + appointmentToAdd.getType() + "', ";
-        String start = "'" + TimeConversion.dateToString(appointmentToAdd.getStart()) + "', ";
-        String end = "'" + TimeConversion.dateToString(appointmentToAdd.getEnd()) + "', ";
+        String start = "'" + TimeConversion.dateToString(appointmentToAdd.getStart(), Zone.UTC) + "', ";
+        String end = "'" + TimeConversion.dateToString(appointmentToAdd.getEnd(), Zone.UTC) + "', ";
         String create = " now(), ";
         String createdby = "'" + DBUser.returnUserById(appointmentToAdd.getUserId()).getName() + "', ";
         String update = " now(), ";

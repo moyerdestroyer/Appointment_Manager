@@ -25,7 +25,7 @@ public class LoginFormController {
 
     public void errorMessage() {
         Alert error = new Alert(Alert.AlertType.ERROR);
-        error.setWidth(400);
+        error.setWidth(600);
         Locale defaultLocale = Locale.getDefault();
         ResourceBundle defaultBundle = ResourceBundle.getBundle("Resources.language", defaultLocale);
         error.setTitle(defaultBundle.getString("error"));

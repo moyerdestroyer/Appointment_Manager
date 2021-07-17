@@ -1,5 +1,7 @@
 package Model;
 
+import DAO.TimeConversion;
+
 import java.time.LocalDateTime;
 
 public class Appointment {
@@ -146,5 +148,12 @@ public class Appointment {
 
     public void setContactId(int contactId) {
         this.contactId = contactId;
+    }
+
+    public String getStartString() {
+        return TimeConversion.dateToString(this.start, Zone.LOCAL);
+    }
+    public String getEndString() {
+        return TimeConversion.dateToString(this.end, Zone.LOCAL);
     }
 }
