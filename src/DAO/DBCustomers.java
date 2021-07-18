@@ -10,7 +10,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+/**
+ * Performs all Customer DB interactions
+ */
 public class DBCustomers {
+    /**
+     * @return Returns all Customers from DB customer table
+     */
     public static ObservableList<Customer> returnAllCustomers() {
         ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
         try {
@@ -36,6 +42,11 @@ public class DBCustomers {
         }
         return allCustomers;
     }
+
+    /**
+     * @param targetDivision Returns customers based on the division id
+     * @return
+     */
     public static ObservableList<Customer> returnCustomerByDivision(FirstLevel targetDivision) {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         int targetDivisionId = targetDivision.getId();
@@ -63,6 +74,10 @@ public class DBCustomers {
         return customerList;
     }
 
+    /**
+     * @param customerToSave Adds the Customer to the DB
+     * @return
+     */
     public static String addCustomer(Customer customerToSave) {
         String concatString;
         String name = "'" + customerToSave.getName() + "', ";
@@ -88,6 +103,10 @@ public class DBCustomers {
         return returnString;
     }
 
+    /**
+     * @param customerToSave Updates customer to DB based on Customer ID
+     * @return
+     */
     public static String updateCustomer(Customer customerToSave) {
         String concatString;
         String name = "Customer_Name = '" + customerToSave.getName() + "', ";
@@ -110,6 +129,10 @@ public class DBCustomers {
         return returnString;
     }
 
+    /**
+     * @param customerToDelete Deletes Customer from DB based on Customer ID
+     * @return
+     */
     public static String deleteCustomer(Customer customerToDelete) {
         String sql = "DELETE FROM customers WHERE Customer_ID = " + customerToDelete.getId();
         String returnString = "";

@@ -22,11 +22,17 @@ import java.time.LocalDate;
 import java.time.Month;
 
 
+/**
+ * Report view Controller for Report_View.fxml, called in a showAndWait() context
+ */
 public class ReportViewController {
     ObservableList<Appointment> allAppointments;
     ObservableList<User> allUsers;
     ObservableList<Contact> allContacts;
 
+    /**
+     * Initialize function, gets appointments, users, and contacts, populating tables
+     */
     public void initialize() {
         allAppointments = DBAppointments.returnAllAppointments();
         allUsers = DBUser.returnAllUsers();
@@ -128,6 +134,10 @@ public class ReportViewController {
     @FXML
     private Button Quit_Button;
 
+    /**
+     * @param event Quit button to close the pop-up
+     * @throws IOException
+     */
     @FXML
     void QuitButtonAction(ActionEvent event) throws IOException {
         Node  source = (Node)  event.getSource();

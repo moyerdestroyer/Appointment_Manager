@@ -10,7 +10,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+/**
+ * DB interaction for the Country Table
+ */
 public class DBCountries {
+    /**
+     * @return Returns ALL Countries from the DB
+     */
     public static ObservableList<Country> getAllCountries() {
         ObservableList<Country> allCountries = FXCollections.observableArrayList();
         try {
@@ -32,6 +38,11 @@ public class DBCountries {
         }
         return  allCountries;
     }
+
+    /**
+     * @param selectedCountryID Returns the country by the int ID
+     * @return
+     */
     public static Country getCountryById(int selectedCountryID) {
         Country selectedCountry = null;
         try {

@@ -13,16 +13,28 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for Login_Form.fxml
+ */
 public class LoginFormController {
+    /**
+     * Initialization function calls startConnection and attempts to create the "activity_log.txt" file
+     * Sets Location on bottom text based on system Default
+     */
     public void initialize() {
         DBConnection.startConnection();
+        FileHandler.createFile();
         Location_Label.setText(String.valueOf(ZoneId.systemDefault()));
     }
 
+    /**
+     * Error message for login, displays on invalid login procedure
+     */
     public void errorMessage() {
         Alert error = new Alert(Alert.AlertType.ERROR);
         error.setWidth(600);
@@ -55,12 +67,18 @@ public class LoginFormController {
     @FXML
     private Label Location_Label;
 
+    /**
+     * @param event Checks username, password on user data in the DB. If true, goes to Appointment_View.fxml and passes the user
+     *              Also appends to the user activity log
+     * @throws IOException
+     */
     @FXML
     public void LoginButtonAction(ActionEvent event) throws IOException {
         String username = Username_Text.getText();
         String password = Password_Text.getText();
-        System.out.println(DBUser.login(username, password));
-        if (DBUser.login(username, password)) {
+        boolean loginSuccessful = DBUser.login(username, password);
+        FileHandler.appendFile("Login Attempt: " + username + " - " + TimeConversion.dateToString(LocalDateTime.now()) + " " + loginSuccessful);
+        if (loginSuccessful) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/Appointment_View.fxml"));
             Parent root = (Parent) loader.load();
             Stage primaryStage = (Stage)((Node) event.getSource()).getScene().getWindow();
@@ -73,5 +91,4 @@ public class LoginFormController {
             errorMessage();
         }
     }
-
 }

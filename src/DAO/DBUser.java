@@ -9,7 +9,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+/**
+ * Class that handles User Database table interaction
+ */
 public class DBUser {
+    /**
+     * @return Returns All Users from the DB
+     */
     public static ObservableList<User> returnAllUsers() {
         ObservableList<User> allUsers = FXCollections.observableArrayList();
         try {
@@ -32,6 +38,11 @@ public class DBUser {
         }
         return allUsers;
     }
+
+    /**
+     * Check User against the password in the User entry
+     * @return Returns true if Username/password correct
+     */
     public static boolean login(String username, String password) {
         User selectedUser = null;
         try {
@@ -59,6 +70,11 @@ public class DBUser {
             return false;
         }
     }
+
+    /**
+     * @param username Gets the Entire User by the username String
+     * @return
+     */
     public static User returnUserByName(String username) {
         User selectedUser = null;
         try {
@@ -80,6 +96,11 @@ public class DBUser {
         }
         return selectedUser;
     }
+
+    /**
+     * @param id Returns User Object based on the int id
+     * @return
+     */
     public static User returnUserById(int id) {
         User selectedUser = null;
         try {

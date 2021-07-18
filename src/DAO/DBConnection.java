@@ -29,6 +29,9 @@ public class DBConnection {
     private static final String password = "53688737976"; //password
 
 
+    /**
+     * @return Connects to DB with url, username, password
+     */
     public static Connection startConnection() {
         try {
             Class.forName(MYSQLJDBCDriver);
@@ -40,10 +43,16 @@ public class DBConnection {
         return conn;
     }
 
+    /**
+     * @return returns the connection
+     */
     public static Connection getConnection() {
         return conn;
     }
 
+    /**
+     * Closes connection at end of program
+     */
     public static void closeConnection() {
         try {
             conn.close();

@@ -11,7 +11,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+/**
+ * Handles all Appointment-related DB interactions
+ */
 public class DBAppointments {
+    /**
+     * @return Returns ALL appointments
+     */
     public static ObservableList<Appointment> returnAllAppointments() {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         try {
@@ -41,6 +47,11 @@ public class DBAppointments {
         }
         return allAppointments;
     }
+
+    /**
+     * @param targetCustomer Returns appointment list for any particular customer
+     * @return
+     */
     public static ObservableList<Appointment> returnAppointmentByCustomer(Customer targetCustomer) {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         int targetId = targetCustomer.getId();
@@ -71,6 +82,11 @@ public class DBAppointments {
         }
         return appointmentList;
     }
+
+    /**
+     * @param appointmentToUpdate Updates a previously existing appointment
+     * @return
+     */
     public static String updateAppointment (Appointment appointmentToUpdate) {
         String title = "UPDATE appointments SET Title = '" + appointmentToUpdate.getTitle() + "', ";
         String description = "Description = '" + appointmentToUpdate.getDescription() + "', ";
@@ -96,6 +112,11 @@ public class DBAppointments {
         }
         return returnString;
     }
+
+    /**
+     * @param appointmentToAdd Adds appointment to DB
+     * @return
+     */
     public static String addAppointment (Appointment appointmentToAdd) {
         String title = "'" + appointmentToAdd.getTitle() + "', ";
         String description = "'" + appointmentToAdd.getDescription() + "', ";
@@ -125,6 +146,11 @@ public class DBAppointments {
         //INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID)
         //VALUES ('New Title', 'Cool thing', 'Right here', 'No type', '2021-06-04 19:00:00', '2021-06-04 20:00:00', NOW(), 'test', NOW(), 'test', 1, 2, 3);
     }
+
+    /**
+     * @param appointmentToDelete Deletes appointment in DB based on ID in parameter appointnment
+     * @return
+     */
     public static String deleteAppointment (Appointment appointmentToDelete) {
         String returnString = "";
         String sql = "DELETE FROM appointments WHERE Appointment_ID = " + appointmentToDelete.getId();

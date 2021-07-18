@@ -32,12 +32,18 @@ import javafx.util.StringConverter;
 import java.io.IOException;
 import java.util.function.Predicate;
 
+/**
+ * Customer View class, uses customer, country, and division data. User data is passed in with pass_user
+ */
 public class CustomerViewController {
     User loggedInUser;
     ObservableList<Customer> allCustomers;
     ObservableList<Country> allCountries;
     ObservableList<FirstLevel> allDivisions;
 
+    /**
+     * Updates all lists from the DB, then sets up the table
+     */
     public void initialize() {
         allCustomers = DBCustomers.returnAllCustomers();
         allCountries = DBCountries.getAllCountries();
@@ -156,6 +162,9 @@ public class CustomerViewController {
     @FXML
     private Button Save_Button;
 
+    /**
+     * Clears the fields and adds "Auto" to the textfield
+     */
     @FXML
     void AddCustomerAction(ActionEvent event) {
         Id_Textfield.setText("Auto");
@@ -167,6 +176,10 @@ public class CustomerViewController {
         Division_Choicebox.getSelectionModel().selectFirst();
     }
 
+    /**
+     * Gets the selected customer from table, and fills in the info into the textfields
+     * Makes a call to the Database in order to get country by id, and fill in the division choicebox
+     */
     @FXML
     void SelectCustomerAction(ActionEvent event) {
         Customer selectedCustomer = Customer_Table.getSelectionModel().getSelectedItem();
@@ -184,6 +197,10 @@ public class CustomerViewController {
         }
     }
 
+    /**
+     * @param event Switches the view to Appointment_View.fxml, passes user as well
+     * @throws IOException
+     */
     @FXML
     void AppointmentViewAction(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/Appointment_View.fxml"));
@@ -196,17 +213,26 @@ public class CustomerViewController {
         primaryStage.show();
     }
 
+    /**
+     * @param event Attempts to delete the customer, based on the selected customer
+     */
     @FXML
     void DeleteCustomerAction(ActionEvent event) {
         Customer customerToDelete = getCustomerFromFields();
         DBCustomers.deleteCustomer(customerToDelete);
     }
 
+    /**
+     * @param event Quits the program
+     */
     @FXML
     void QuitButtonAction(ActionEvent event) {
         Platform.exit();
     }
 
+    /**
+     * @param event Calls addCustomer or updateCustomer functions, base on the id in the textfield
+     */
     @FXML
     void SaveButtonAction(ActionEvent event) {
         Customer customerToSave = getCustomerFromFields();
@@ -219,6 +245,9 @@ public class CustomerViewController {
     }
 
 
+    /**
+     * @return Generates Customer from the textfields, returns null if there is a problem.
+     */
     public Customer getCustomerFromFields() {
         Customer returnCustomer = null;
         int idInt;
@@ -267,6 +296,9 @@ public class CustomerViewController {
     }
 
 
+    /**
+     * Refreshes all lists and initializes the view
+     */
     public void refreshTables() {
         this.allCustomers.removeAll();
         this.allDivisions.removeAll();

@@ -14,6 +14,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 
+/**
+ * the Start function immediately opens the Login_Form.fxml, and detects default Locale on user computer, setting the appropriate resource bundle
+ */
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -27,10 +30,10 @@ public class Main extends Application {
     }
 
 
+    /**
+     * @param args main function, closes connection at end of program
+     */
     public static void main(String[] args) {
-        //Testing
-
-        //Testing
         launch(args);
         DBConnection.closeConnection();
     }

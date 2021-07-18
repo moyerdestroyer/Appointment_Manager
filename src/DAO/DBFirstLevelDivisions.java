@@ -10,7 +10,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+/**
+ * Handles DB interactions for the Division Table
+ */
 public class DBFirstLevelDivisions {
+    /**
+     * @return Returns all First Level Divisions
+     */
     public static ObservableList<FirstLevel> getFirstLevelDivisions() {
         ObservableList<FirstLevel> allFirstLevel = FXCollections.observableArrayList();
         try {
@@ -33,6 +39,11 @@ public class DBFirstLevelDivisions {
         }
         return allFirstLevel;
     }
+
+    /**
+     * @param targetCountry Returns the country by target ID
+     * @return
+     */
     public static ObservableList<FirstLevel> getFirstLevelByCountryID(Country targetCountry){
         int targetCountryId = targetCountry.getId();
         ObservableList<FirstLevel> firstLevelList = FXCollections.observableArrayList();
@@ -56,6 +67,11 @@ public class DBFirstLevelDivisions {
         }
         return firstLevelList;
     }
+
+    /**
+     * @param divisionID Returns Division based on the ID
+     * @return
+     */
     public static FirstLevel getDivisionByID (int divisionID) {
         FirstLevel returnDivision = null;
         try {

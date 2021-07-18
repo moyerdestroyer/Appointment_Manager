@@ -4,6 +4,9 @@ import DAO.TimeConversion;
 
 import java.time.LocalDateTime;
 
+/**
+ * Appointment object Class variables mirror the table entries
+ */
 public class Appointment {
     private int id;
     private String title;
@@ -20,7 +23,9 @@ public class Appointment {
     private int userId;
     private int contactId;
 
-    //Constructor
+    /**
+     * Constructor for the Appointment Object
+     */
     public Appointment(int id, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdatedBy, int customerId, int userId, int contactId) {
         this.id = id;
         this.title = title;
@@ -150,9 +155,16 @@ public class Appointment {
         this.contactId = contactId;
     }
 
+    /**
+     * @return Returns the Start Date/Time as a String, converting to LOCAL time as well
+     */
     public String getStartString() {
         return TimeConversion.dateToString(this.start, Zone.LOCAL);
     }
+
+    /**
+     * @return Returns End Date/Time as a String, converts to LOCAL
+     */
     public String getEndString() {
         return TimeConversion.dateToString(this.end, Zone.LOCAL);
     }

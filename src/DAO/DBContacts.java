@@ -8,7 +8,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * DB Contact interaction class
+ */
 public class DBContacts {
+    /**
+     * @return Returns all Contacts from DB
+     */
     public static ObservableList<Contact> returnAllContacts() {
         ObservableList<Contact> allContacts = FXCollections.observableArrayList();
         try {
