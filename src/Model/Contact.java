@@ -1,11 +1,14 @@
 package Model;
 
+/**
+ * Contact Class - Variables mirror the Contact table entry in the DB
+ */
 public class Contact {
     private int id;
     private String name;
     private String email;
 
-    //Constructor
+    /* Constructor */
     public Contact(int id, String name, String email) {
         this.id = id;
         this.name = name;

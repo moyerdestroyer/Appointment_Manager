@@ -1,8 +1,9 @@
 package Model;
-
-
 import java.time.LocalDateTime;
 
+/**
+ * Division object class - variables are identical to the DB table entry
+ */
 public class FirstLevel {
     private int id;
     private String division;
@@ -12,7 +13,7 @@ public class FirstLevel {
     private String lastUpdatedBy;
     private int countryId;
 
-    //Constructor
+    /* Constructor */
     public FirstLevel(int id, String division, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdated, String lastUpdatedBy, int countryId) {
         this.id = id;
         this.division = division;

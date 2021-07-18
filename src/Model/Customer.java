@@ -5,6 +5,9 @@ import DAO.DBFirstLevelDivisions;
 
 import java.time.LocalDateTime;
 
+/**
+ * Customer Class - One additional variable than the DB table entry
+ */
 public class Customer {
     private int id;
     private String name;
@@ -18,7 +21,7 @@ public class Customer {
     private int divisionId;
     private String countryName;
 
-    //Constructor
+    /* Constructor - countryName is found by calling getCountryById() */
     public Customer(int id, String name, String address, String postalCode, String phoneNumber, LocalDateTime dateCreated, String createdBy, LocalDateTime lastUpdated, String lastUpdatedBy, int divisionId) {
         this.id = id;
         this.name = name;

@@ -1,8 +1,9 @@
 package Model;
-
-
 import java.time.LocalDateTime;
 
+/**
+ * User Class - variables are identical to the DB table entry
+ */
 public class User {
     private int id;
     private String name;
@@ -12,7 +13,7 @@ public class User {
     private LocalDateTime lastUpdated;
     private String lastUpdatedBy;
 
-    //Constructor
+    /* Constructor */
     public User (int id, String name, String password, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdated, String lastUpdatedBy) {
         this.id = id;
         this.name = name;

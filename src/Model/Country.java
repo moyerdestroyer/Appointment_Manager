@@ -1,7 +1,9 @@
 package Model;
-
 import java.time.LocalDateTime;
 
+/**
+ * Class defining a Country object, variables are identical to the DB table entry
+ */
 public class Country {
     private int id;
     private String country;
@@ -10,6 +12,9 @@ public class Country {
     private LocalDateTime lastUpdated;
     private String lastUpdatedBy;
 
+    /**
+     * Constructor for the country
+     */
     public Country(int id, String country, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdated, String lastUpdatedBy) {
         this.id = id;
         this.country = country;
