@@ -7,7 +7,6 @@ import DAO.TimeConversion;
 import Model.Appointment;
 import Model.Contact;
 import Model.User;
-import Model.Zone;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
@@ -20,42 +19,43 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
+import java.time.*;
 import java.time.temporal.ChronoField;
+import java.util.TimeZone;
 
-/** This is the main appointment view controller, displays all appointments */
+/** This is the main appointment view controller, displays all appointments <br>
+ * <i>Contains Lambda Descriptions</i>
+ */
 public class AppointmentViewController {
     User loggedInUser;
     ObservableList<Appointment> allAppointments = DBAppointments.returnAllAppointments();
     ObservableList<Contact> allContacts = DBContacts.returnAllContacts();
     /**
-     * The Initialize function is called everytime this screen is loaded. It gets all the data from the DAO, and creates the observable lists to display
+     * The Initialize function is called everytime this screen is loaded. It gets all the data from the DAO, and creates the observable lists to display. The Initialize function utilizes multiple lambdas, mostly for setting up table views.<br>
+     * <b>Lambda 1:</b> The first lamba is a simple Lambda expressions that calls TimeConversion.dateToString on the returned values of the appointments. The converted dates are then wrapped in a read-only String which allows it to be added to the Table as a String.<br>
+     * <b>Lambda 2:</b> This Lambda sets the predicated for filteredMonthData (FilteredList). The predicate returns true if the Appointment in the list is in the same month and year as the user local time.<br>
+     * <b>Lambda 3:</b> This lambda sets up the predicate for the Week Table. It returns true if the appointment is in the same week of the year as on the user system.<br>
+     * <b>Lambda 4:</b> This ensures that only one selection can be made from either of the 3 tables
      */
     public void initialize() {
-        //Set up the All Table, showing all appointments
         All_Id_Column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("id"));
         All_Title_Column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
         All_Description_Column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
         All_Location_Column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
         All_Contact_Column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("contactId"));
         All_Type_Column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
+        //Lambda 1
         All_Start_Column.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(TimeConversion.dateToString(cellData.getValue().getStart())));
         All_End_Column.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(TimeConversion.dateToString(cellData.getValue().getEnd())));
         All_Customer_Id_Column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerId"));
         All_Appointment_Table.setItems(allAppointments);
-
-        //Set up the Month Table
         Month currentMonth = LocalDate.now().getMonth();
         int currentYear = LocalDate.now().getYear();
+        //Lambda 2
         FilteredList<Appointment> filteredMonthData = new FilteredList<>(allAppointments, p -> true);
         filteredMonthData.setPredicate(Appointment -> {
             if (Appointment.getStart().getMonth() == currentMonth && Appointment.getStart().getYear() == currentYear) {
@@ -76,8 +76,8 @@ public class AppointmentViewController {
         Month_Customer_Id_Column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerId"));
         Month_Appointment_Table.setItems(filteredMonthData);
 
-        //Setup the Week table
         int weekOfYear = LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR);
+        //Lambda 3
         FilteredList<Appointment> filteredWeekData = new FilteredList<>(allAppointments, p -> true);
         filteredWeekData.setPredicate(Appointment -> {
             return Appointment.getStart().get(ChronoField.ALIGNED_WEEK_OF_YEAR) == weekOfYear;
@@ -92,12 +92,12 @@ public class AppointmentViewController {
         Week_End_Column.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(TimeConversion.dateToString(cellData.getValue().getEnd())));
         Week_Customer_Id_Column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerId"));
         Week_Appointment_Table.setItems(filteredWeekData);
-
-        //Add listeners to Tables and set to single selection
+        //Sets Selection Mode
         All_Appointment_Table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         Week_Appointment_Table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         Month_Appointment_Table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         All_Appointment_Table.getSelectionModel().selectFirst();
+        //Lambda 4
         All_Appointment_Table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 Week_Appointment_Table.getSelectionModel().clearSelection();
@@ -116,7 +116,6 @@ public class AppointmentViewController {
                 All_Appointment_Table.getSelectionModel().clearSelection();
             }
         });
-
         /* Setup Contact Choicebox - Converts ID to names for easier selection*/
         Contact_ChoiceBox.setItems(allContacts);
         Contact_ChoiceBox.setConverter(new StringConverter<Contact>() {
@@ -130,7 +129,13 @@ public class AppointmentViewController {
                 return null;
             }
         });
+    }
 
+    /**
+     * @param username Gets the loggedInUser by passing the username String
+     */
+    public void passUser(String username) {
+        this.loggedInUser = DBUser.returnUserByName(username);
         /*
         Loops through appointments to find if one 15 minutes in the future
          */
@@ -150,11 +155,12 @@ public class AppointmentViewController {
                 break;
             }
         }
-
-    }
-
-    public void passUser(String username) {
-        this.loggedInUser = DBUser.returnUserByName(username);
+        if (!immediateAppointment) {
+            Alert issue = new Alert(Alert.AlertType.WARNING);
+            issue.setTitle("Alert");
+            issue.setContentText("No Upcoming Appointments");
+            issue.showAndWait();
+        }
     }
 
     @FXML
@@ -354,7 +360,7 @@ public class AppointmentViewController {
     void DeleteAppointmentAction(ActionEvent event) {
         Appointment appointmentToDelete = getSelectedAppointment();
         try {
-            System.out.println(DBAppointments.deleteAppointment(appointmentToDelete));
+            errorMessage(DBAppointments.deleteAppointment(appointmentToDelete));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -399,7 +405,7 @@ public class AppointmentViewController {
     }
 
     /**
-     * @return Returs the selected appointment in the table
+     * @return Returns the selected appointment in the table
      */
     public Appointment getSelectedAppointment()  {
         Appointment selectedAppointment = null;
@@ -452,7 +458,6 @@ public class AppointmentViewController {
             errorMessage("Start Date Error: put in format - yyyy-MM-dd HH:mm:ss");
             return returnAppointment;
         }
-
         LocalDateTime endDate;
         try {
             endDate = TimeConversion.stringToDate(End_Textfield.getText());
@@ -468,6 +473,29 @@ public class AppointmentViewController {
             return returnAppointment;
         }
         int contactIdInt = Contact_ChoiceBox.getSelectionModel().getSelectedItem().getId();
+        /* Check Dates against EST office hours, then check for overlapping appointments for customers */
+        ZonedDateTime startTimeWithZone = startDate.atZone(TimeZone.getDefault().toZoneId());
+        LocalTime startTime = startTimeWithZone.withZoneSameInstant(ZoneId.of("-05:00")).toLocalTime();
+        LocalTime openHours = LocalTime.parse("08:00:00");
+        LocalTime closeHours = LocalTime.parse("22:00:00");
+        if (startTime.compareTo(openHours) < 0 || startTime.compareTo(closeHours) > 0) {
+            errorMessage("Outside of Office Hours");
+            return returnAppointment;
+        }
+        for (int i = 0; i < allAppointments.size(); i++) {
+            if (allAppointments.get(i).getCustomerId() == customerIdInt){
+                //Check if Start and end dates are in range
+                if (allAppointments.get(i).getStart().isAfter(startDate) && allAppointments.get(i).getStart().isBefore(endDate)) {
+                    errorMessage("Start time interferes with this customer's previously scheduled appointment");
+                    return returnAppointment;
+                }
+                if (allAppointments.get(i).getEnd().isBefore(endDate) && allAppointments.get(i).getStart().isAfter(startDate)) {
+                    errorMessage("End time intereferes with this customer's previously scheduled appointment");
+                    return returnAppointment;
+                }
+            }
+        }
+
         returnAppointment = new Appointment(idInt, titleString, descriptionString, locationString, typeString, startDate, endDate, TimeConversion.now(), loggedInUser.getName(), TimeConversion.now(), loggedInUser.getName(), customerIdInt, loggedInUser.getId(), contactIdInt);
         return returnAppointment;
     }

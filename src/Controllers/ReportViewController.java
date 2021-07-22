@@ -23,7 +23,8 @@ import java.time.Month;
 
 
 /**
- * Report view Controller for Report_View.fxml, called in a showAndWait() context
+ * Report view Controller for Report_View.fxml, called in a showAndWait() context <br>
+ * <i>Contains Lambda Description</i>
  */
 public class ReportViewController {
     ObservableList<Appointment> allAppointments;
@@ -31,13 +32,13 @@ public class ReportViewController {
     ObservableList<Contact> allContacts;
 
     /**
-     * Initialize function, gets appointments, users, and contacts, populating tables
+     * Initialize function, gets appointments, users, and contacts, populating tables <br>
+     * <b>Lambda:</b> This lambda functions by dynamically setting the predicate for the Contact_Table item. The predicate works by checking the contact ID against the Contact ID in the appointment.
      */
     public void initialize() {
         allAppointments = DBAppointments.returnAllAppointments();
         allUsers = DBUser.returnAllUsers();
         allContacts = DBContacts.returnAllContacts();
-
         Contact_Choicebox.setItems(allContacts);
         Contact_Choicebox.setConverter(new StringConverter<Contact>() {
             @Override
@@ -50,14 +51,13 @@ public class ReportViewController {
                 return null;
             }
         });
-
         Contact_Id_Column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("id"));
         Contact_Title_Column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
         Contact_Description_Column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
         Contact_Start_Column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("startString"));
         Contact_End_Column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("endString"));
         Contact_Customer_Id_Column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerId"));
-
+        //Lambda
         FilteredList<Appointment> filteredAppointments = new FilteredList<>(allAppointments, a -> true);
         Contact_Table.setItems(filteredAppointments);
         Contact_Choicebox.getSelectionModel().selectedItemProperty().addListener(obs -> {
@@ -66,7 +66,6 @@ public class ReportViewController {
             });
         });
         Contact_Choicebox.getSelectionModel().selectFirst();
-
         //Setup Appointment description list
         ObservableList<String> monthData = FXCollections.observableArrayList();
         Month currentMonth = LocalDate.now().getMonth();

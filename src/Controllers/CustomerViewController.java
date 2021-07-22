@@ -1,16 +1,11 @@
 package Controllers;
 
-import DAO.DBCountries;
-import DAO.DBCustomers;
-import DAO.DBFirstLevelDivisions;
-import DAO.TimeConversion;
-import Model.*;
+import DAO.*;
+import Model.Country;
+import Model.Customer;
+import Model.FirstLevel;
+import Model.User;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -19,18 +14,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
-import java.util.function.Predicate;
 
 /**
  * Customer View class, uses customer, country, and division data. User data is passed in with pass_user
@@ -58,7 +47,6 @@ public class CustomerViewController {
         Phone_Number_Column.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
         Customer_Table.setItems(allCustomers);
 
-
         Country_ChoiceBox.setConverter(new StringConverter<Country>() {
             @Override
             public String toString(Country country) {
@@ -71,6 +59,7 @@ public class CustomerViewController {
             }
         });
         Country_ChoiceBox.setItems(allCountries);
+        
         FilteredList<FirstLevel> filteredDivisions = new FilteredList<>(allDivisions, d -> true);
         Division_Choicebox.setItems(filteredDivisions);
         Country_ChoiceBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
@@ -218,8 +207,12 @@ public class CustomerViewController {
      */
     @FXML
     void DeleteCustomerAction(ActionEvent event) {
-        Customer customerToDelete = getCustomerFromFields();
-        DBCustomers.deleteCustomer(customerToDelete);
+        Customer customerToDelete = Customer_Table.getSelectionModel().getSelectedItem();
+        Alert message = new Alert(Alert.AlertType.INFORMATION);
+        message.setTitle("Delete");
+        message.setContentText(DBAppointments.deleteAppointmentByCustomer(customerToDelete) +"\n" + DBCustomers.deleteCustomer(customerToDelete));
+        message.showAndWait();
+        refreshTables();
     }
 
     /**
@@ -238,6 +231,7 @@ public class CustomerViewController {
         Customer customerToSave = getCustomerFromFields();
         if (Id_Textfield.getText().contains("Auto")) {
             DBCustomers.addCustomer(customerToSave);
+            refreshTables();
         } else {
             DBCustomers.updateCustomer(customerToSave);
             refreshTables();

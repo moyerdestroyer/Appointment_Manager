@@ -139,7 +139,7 @@ public class DBCustomers {
         try {
             PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
             boolean successful = ps.execute();
-            returnString = "Customer Deleted: " + successful;
+            returnString = "Issues Deleting Customer: " + successful;
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -5,7 +5,6 @@ import Model.Customer;
 import Model.Zone;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,38 +48,20 @@ public class DBAppointments {
     }
 
     /**
-     * @param targetCustomer Returns appointment list for any particular customer
+     * @param targetCustomer Deletes all Appointments associated customer ID
      * @return
      */
-    public static ObservableList<Appointment> returnAppointmentByCustomer(Customer targetCustomer) {
-        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
-        int targetId = targetCustomer.getId();
+    public static String deleteAppointmentByCustomer(Customer targetCustomer) {
+        String returnString = "";
+        String sql = "DELETE FROM appointments WHERE Customer_ID = " + targetCustomer.getId();
         try {
-            String sql = "SELECT * FROM appointments WHERE " + targetId;
             PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                int appointmentId = rs.getInt("Appointment_ID");
-                String appointmentTitle = rs.getString("Title");
-                String description = rs.getString("Description");
-                String location = rs.getString("Location");
-                String type = rs.getString("Type");
-                LocalDateTime start = rs.getTimestamp("Start").toLocalDateTime();
-                LocalDateTime end = rs.getTimestamp("End").toLocalDateTime();
-                LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
-                String createdBy = rs.getString("Created_By");
-                LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
-                String lastUpdatedBy = rs.getString("Last_Updated_By");
-                int customerId = rs.getInt("Customer_ID");
-                int userId = rs.getInt("User_ID");
-                int contactId = rs.getInt("Contact_ID");
-                Appointment a = new Appointment(appointmentId, appointmentTitle, description, location, type, start, end, createDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
-                appointmentList.add(a);
-            }
+            boolean successful = ps.execute();
+            returnString = "Issues deleting Appointment(s): " + successful;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return appointmentList;
+        return returnString;
     }
 
     /**
@@ -157,7 +138,7 @@ public class DBAppointments {
         try {
             PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
             boolean successful = ps.execute();
-            returnString = "Appointment deleted: " + successful;
+            returnString = "Appointment: " + appointmentToDelete.getId() + " - " + appointmentToDelete.getDescription() + "\nIssues Deleting Appointment: " + successful;
         } catch (SQLException e) {
             e.printStackTrace();
         }
